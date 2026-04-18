@@ -1,0 +1,81 @@
+<thy-layout class="demo-home">
+  <thy-header [thyHasBorder]="false" [thyShadow]="false" class="demo-home__header">
+    <div class="demo-home__header-inner">
+      <thy-breadcrumb [thySeparator]="'slash'">
+        <thy-breadcrumb-item>ngx-lowcode</thy-breadcrumb-item>
+        <thy-breadcrumb-item>demo</thy-breadcrumb-item>
+      </thy-breadcrumb>
+      <div class="demo-home__locale">
+        <span>{{ copy().localeLabel }}</span>
+        <button thyButton="outline-primary" size="sm" (click)="workspace.locale.set('zh-CN')">
+          中文
+        </button>
+        <button thyButton="outline-primary" size="sm" (click)="workspace.locale.set('en-US')">
+          EN
+        </button>
+      </div>
+    </div>
+  </thy-header>
+
+  <thy-content class="demo-home__content">
+    <div class="demo-home__hero">
+      <p class="demo-home__eyebrow">Commercial Demo</p>
+      <h1>{{ copy().heroTitle }}</h1>
+      <p>{{ copy().heroDescription }}</p>
+      <div class="demo-home__hero-actions">
+        <a thyButton="primary" routerLink="/studio/model">{{ copy().workspaceNavModel }}</a>
+        <a thyButton="outline-primary" routerLink="/studio/permission">{{
+          copy().workspaceNavPermission
+        }}</a>
+        <a thyButton="outline-primary" routerLink="/studio/page/designer">{{
+          copy().workspaceNavPage
+        }}</a>
+      </div>
+    </div>
+
+    <div class="demo-home__cards">
+      <thy-card thyBordered="false" class="demo-home__card">
+        <thy-card-header
+          [thyTitle]="copy().workspaceNavModel"
+          [thyDescription]="copy().homeModelDescription"
+        ></thy-card-header>
+        <thy-card-content>
+          <a thyButton="primary" routerLink="/studio/model">{{ copy().workspaceNavModel }}</a>
+        </thy-card-content>
+      </thy-card>
+      <thy-card thyBordered="false" class="demo-home__card">
+        <thy-card-header
+          [thyTitle]="copy().workspaceNavDatasource"
+          [thyDescription]="copy().homeDatasourceDescription"
+        ></thy-card-header>
+        <thy-card-content>
+          <a thyButton="primary" routerLink="/studio/datasource">{{
+            copy().workspaceNavDatasource
+          }}</a>
+        </thy-card-content>
+      </thy-card>
+      <thy-card thyBordered="false" class="demo-home__card">
+        <thy-card-header
+          [thyTitle]="copy().workspaceNavPermission"
+          [thyDescription]="copy().permissionSectionTitle"
+        ></thy-card-header>
+        <thy-card-content>
+          <a thyButton="primary" routerLink="/studio/permission">{{
+            copy().workspaceNavPermission
+          }}</a>
+        </thy-card-content>
+      </thy-card>
+      <thy-card thyBordered="false" class="demo-home__card">
+        <thy-card-header
+          [thyTitle]="copy().workspaceNavPage"
+          [thyDescription]="copy().homePageDescription"
+        ></thy-card-header>
+        <thy-card-content>
+          <a thyButton="primary" routerLink="/studio/page/designer">{{
+            copy().workspaceNavPage
+          }}</a>
+        </thy-card-content>
+      </thy-card>
+    </div>
+  </thy-content>
+</thy-layout>

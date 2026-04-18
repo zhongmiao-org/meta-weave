@@ -1,41 +1,59 @@
-# meta-weave
+# Temp
 
-`meta-weave` is the standalone Angular platform application migrated from `ngx-lowcode/src`.
-This repository is now the primary front-end entry for low-code demo/studio and deployment.
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
 
-## Stack
+## Development server
 
-- Angular 21
-- `ngx-tethys` UI
-- `@zhongmiao/ngx-lowcode-*` libraries
-- `@zhongmiao/meta-lc-runtime-angular` transport adapter
-
-## Development
+To start a local development server, run:
 
 ```bash
-npm install
-npm start
+ng serve
 ```
 
-Default URL: `http://localhost:4200`
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## BFF Endpoint
+## Code scaffolding
 
-- default: `http://localhost:6000`
-- runtime override before app bootstrap:
-
-```ts
-window.__LC_BFF_URL__ = 'http://<host>:6000';
-```
-
-## Validation
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
 ```bash
-npm run build
-npm test
+ng generate component component-name
 ```
 
-## Notes
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
-- This app keeps the same studio routing and behavior that used to live in `ngx-lowcode/src`.
-- `ngx-lowcode` now focuses on publishable library packages only.
+```bash
+ng generate --help
+```
+
+## Building
+
+To build the project run:
+
+```bash
+ng build
+```
+
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Running unit tests
+
+To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+
+```bash
+ng test
+```
+
+## Running end-to-end tests
+
+For end-to-end (e2e) testing, run:
+
+```bash
+ng e2e
+```
+
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Additional Resources
+
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

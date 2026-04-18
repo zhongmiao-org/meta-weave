@@ -1,0 +1,35 @@
+<div class="preview-grid">
+  <thy-card thyBordered="false" class="preview-grid__panel">
+    <div class="preview-grid__header">
+      <div>
+        <p class="preview-grid__eyebrow">{{ copy().previewTitle }}</p>
+        <h2>{{ workspace.schema().pageMeta.title }}</h2>
+      </div>
+    </div>
+
+    <div class="preview-grid__status-grid">
+      <div>
+        <strong>{{ queryStatus().requestId }}</strong
+        ><span>{{ copy().requestId }}</span>
+      </div>
+      <div>
+        <strong>{{ queryStatus().source }}</strong
+        ><span>{{ copy().querySource }}</span>
+      </div>
+      <div>
+        <strong>{{ queryStatus().status }}</strong
+        ><span>{{ copy().queryStatus }}</span>
+      </div>
+      <div>
+        <strong>{{ queryStatus().rowCount }}</strong
+        ><span>{{ copy().queryRows }}</span>
+      </div>
+      <div>
+        <strong>{{ queryStatus().message }}</strong
+        ><span>{{ copy().queryMessage }}</span>
+      </div>
+    </div>
+
+    <ngx-lowcode-renderer [schema]="workspace.schema()"></ngx-lowcode-renderer>
+  </thy-card>
+</div>

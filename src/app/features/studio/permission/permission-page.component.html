@@ -1,0 +1,81 @@
+<form class="permission-page" [formGroup]="form" (ngSubmit)="saveDraft()">
+  <thy-card thyBordered="false" class="permission-page__panel">
+    <div class="permission-page__header">
+      <div>
+        <p class="permission-page__eyebrow">{{ copy().permissionStage }}</p>
+        <h2>{{ copy().apiDesignerTitle }}</h2>
+      </div>
+      <div class="permission-page__actions">
+        <button type="button" thyButton="outline-primary" size="sm" (click)="resetDraft()">
+          Reset
+        </button>
+        <button type="submit" thyButton="primary" size="sm">Save</button>
+      </div>
+    </div>
+
+    <div class="permission-page__grid">
+      <label class="permission-page__field">
+        <span>Query Endpoint</span>
+        <input formControlName="queryEndpoint" />
+      </label>
+      <label class="permission-page__field">
+        <span>Mutation Endpoint</span>
+        <input formControlName="mutationEndpoint" />
+      </label>
+      <label class="permission-page__field">
+        <span>State Key: tenantId</span>
+        <input formControlName="tenantIdStateKey" />
+      </label>
+      <label class="permission-page__field">
+        <span>State Key: userId</span>
+        <input formControlName="userIdStateKey" />
+      </label>
+      <label class="permission-page__field">
+        <span>State Key: roles</span>
+        <input formControlName="rolesStateKey" />
+      </label>
+      <label class="permission-page__field">
+        <span>State Key: selectedRecordId</span>
+        <input formControlName="selectedRecordIdStateKey" />
+      </label>
+      <label class="permission-page__field permission-page__field--full">
+        <span>orgIdStateKeys (comma-separated)</span>
+        <input formControlName="orgIdStateKeysText" />
+      </label>
+    </div>
+  </thy-card>
+
+  <thy-card thyBordered="false" class="permission-page__panel">
+    <div class="permission-page__header">
+      <div>
+        <p class="permission-page__eyebrow">{{ copy().permissionStage }}</p>
+        <h2>{{ copy().permissionSectionTitle }}</h2>
+      </div>
+    </div>
+
+    <div class="permission-page__grid">
+      <label class="permission-page__field permission-page__field--full">
+        <span>Roles (comma-separated)</span>
+        <input formControlName="rolesText" />
+      </label>
+      <label class="permission-page__field">
+        <span>Permission Scope</span>
+        <select formControlName="permissionScope">
+          <option value="SELF">SELF</option>
+          <option value="DEPT">DEPT</option>
+          <option value="DEPT_AND_CHILDREN">DEPT_AND_CHILDREN</option>
+          <option value="CUSTOM_ORG_SET">CUSTOM_ORG_SET</option>
+          <option value="TENANT_ALL">TENANT_ALL</option>
+        </select>
+      </label>
+      <label class="permission-page__field">
+        <span>Default OrgId</span>
+        <input formControlName="selectedOrgId" />
+      </label>
+      <label class="permission-page__field permission-page__field--full">
+        <span>Custom Org Set (comma-separated)</span>
+        <input formControlName="customOrgIdsText" />
+      </label>
+    </div>
+  </thy-card>
+</form>
