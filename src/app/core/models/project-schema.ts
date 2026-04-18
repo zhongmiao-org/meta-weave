@@ -16,6 +16,7 @@ import {
 
 const DEMO_SELECTED_ORDER_STATE_KEY = 'selectedOrderId';
 const DEMO_ORG_ID_STATE_KEYS = ['orgId', 'form_org_id', 'org_id', 'selectedOrgId'] as const;
+const DEMO_ORDERS_QUERY_FIELDS = ['id', 'owner', 'channel', 'priority', 'status'] as const;
 
 export function createDemoMetaModelPreset(): NgxLowcodeMetaModelDraft {
   return createCommerceModelPreset();
@@ -127,6 +128,11 @@ function withDatasourceOrchestrationConfig(
         ...datasource.request,
         params: {
           ...datasource.request?.params,
+          ...(draft.tableId === 'orders'
+            ? {
+                fields: [...DEMO_ORDERS_QUERY_FIELDS],
+              }
+            : {}),
           stateKeys: {
             tenantId: 'tenantId',
             userId: 'userId',
