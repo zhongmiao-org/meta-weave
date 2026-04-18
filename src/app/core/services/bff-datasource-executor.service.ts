@@ -9,6 +9,7 @@ import {
 import { createTenantSeedRows } from '../models/project-schema';
 import type { QueryExecutionSnapshot } from '../interfaces/workspace.interfaces';
 import type { PermissionScope } from '../types/workspace.types';
+import { resolveRuntimeBffBaseUrl } from '../config/bff-url';
 
 interface DemoQueryRequest {
   table: string;
@@ -289,11 +290,7 @@ function resolveEndpoint(datasource: NgxLowcodeDatasourceDefinition): string {
 }
 
 function resolveBaseUrl(): string {
-  const runtimeValue = (globalThis as { __LC_BFF_URL__?: unknown }).__LC_BFF_URL__;
-  if (typeof runtimeValue === 'string' && runtimeValue.trim()) {
-    return runtimeValue.trim().replace(/\/+$/, '');
-  }
-  return 'http://localhost:6000';
+  return resolveRuntimeBffBaseUrl();
 }
 
 function resolveMutationEndpoint(datasource: NgxLowcodeDatasourceDefinition): string {

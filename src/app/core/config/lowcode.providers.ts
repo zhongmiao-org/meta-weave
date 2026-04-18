@@ -13,11 +13,10 @@ import {
 } from '@zhongmiao/meta-lc-runtime-angular';
 import { provideNgxLowcodeMaterials } from '@zhongmiao/ngx-lowcode-materials';
 import { DemoRuntimeExecutionStatusService } from '../services/runtime-execution-status.service';
+import { resolveRuntimeBffBaseUrl } from './bff-url';
 
 function resolveBffBaseUrl(): string {
-  const globalUrl = (globalThis as { __LC_BFF_URL__?: unknown }).__LC_BFF_URL__;
-  const normalized = typeof globalUrl === 'string' ? globalUrl.trim() : '';
-  return normalized.length > 0 ? normalized.replace(/\/+$/, '') : 'http://localhost:6000';
+  return resolveRuntimeBffBaseUrl();
 }
 
 export function provideLowcodeRuntime(): EnvironmentProviders {
