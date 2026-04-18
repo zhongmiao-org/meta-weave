@@ -1,0 +1,27 @@
+<div class="page-shell">
+  <thy-card thyBordered="false" class="page-shell__panel">
+    <div class="page-shell__header">
+      <div>
+        <p class="page-shell__eyebrow">{{ copy().pageStage }}</p>
+        <h2>{{ copy().generatedPageTitle }}</h2>
+        <p class="page-shell__description">
+          {{ workspace.schema().pageMeta.description || copy().noDescription }}
+        </p>
+      </div>
+    </div>
+
+    <thy-nav thyType="pills">
+      <a thyNavItem routerLink="/studio/page/designer" routerLinkActive="active">{{
+        copy().pageNavDesigner
+      }}</a>
+      <a thyNavItem routerLink="/studio/page/preview" routerLinkActive="active">{{
+        copy().pageNavPreview
+      }}</a>
+      <a thyNavItem routerLink="/studio/page/route-config" routerLinkActive="active">{{
+        copy().pageNavRouteConfig
+      }}</a>
+    </thy-nav>
+  </thy-card>
+
+  <router-outlet></router-outlet>
+</div>

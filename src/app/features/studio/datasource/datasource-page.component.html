@@ -1,0 +1,71 @@
+<div class="workspace-page">
+  <thy-card thyBordered="false" class="workspace-page__panel">
+    <div class="workspace-page__header">
+      <div>
+        <p class="workspace-page__eyebrow">{{ copy().datasourceStage }}</p>
+        <h2>{{ copy().datasourceSectionTitle }}</h2>
+        <p class="workspace-page__description">{{ copy().homeDatasourceDescription }}</p>
+      </div>
+      <div class="workspace-page__actions">
+        <button thyButton="outline-primary" size="sm" (click)="workspace.createDatasources()">
+          {{ copy().createDatasource }}
+        </button>
+        <button thyButton="outline-primary" size="sm" (click)="workspace.bindResultTable()">
+          {{ copy().bindDatasource }}
+        </button>
+      </div>
+    </div>
+
+    @if (workspace.selectedDatasource(); as selectedDatasource) {
+      <div class="workspace-page__card">
+        <strong>{{ selectedDatasource.label }}</strong>
+        <div class="workspace-page__tags">
+          <thy-tag thyColor="primary" thyTheme="weak-fill" thySize="sm">{{
+            selectedDatasource.id
+          }}</thy-tag>
+          <thy-tag thyColor="info" thyTheme="weak-fill" thySize="sm">{{
+            selectedDatasource.tableId
+          }}</thy-tag>
+          <thy-tag thyColor="warning" thyTheme="weak-fill" thySize="sm"
+            >key {{ selectedDatasource.keyField }}</thy-tag
+          >
+        </div>
+        <span>{{ selectedDatasource.fields.map((field) => field.name).join(', ') }}</span>
+      </div>
+    } @else {
+      <thy-empty thyIconName="inbox" [thyMessage]="copy().datasourceListTitle"></thy-empty>
+    }
+  </thy-card>
+
+  <thy-card thyBordered="false" class="workspace-page__panel">
+    <div class="workspace-page__header">
+      <div>
+        <p class="workspace-page__eyebrow">{{ copy().bindingStage }}</p>
+        <h2>{{ copy().bindingSectionTitle }}</h2>
+      </div>
+    </div>
+    <div class="workspace-page__card">
+      <strong>{{ copy().generatedPageTitle }}</strong>
+      <span>{{ workspace.schema().pageMeta.title }}</span>
+      <span>{{ workspace.schema().pageMeta.description || copy().noDescription }}</span>
+    </div>
+    <div class="workspace-page__card">
+      <div class="workspace-page__stats">
+        <thy-statistic
+          thyShape="card"
+          thyColor="primary"
+          [thyValue]="workspace.datasourceDrafts().length"
+          [thyTitle]="copy().datasourceCount"
+        ></thy-statistic>
+        <thy-statistic
+          thyShape="card"
+          thyColor="success"
+          [thyValue]="
+            workspace.selectedDatasource() ? workspace.selectedDatasource()!.fields.length : 0
+          "
+          thyTitle="Fields"
+        ></thy-statistic>
+      </div>
+    </div>
+  </thy-card>
+</div>

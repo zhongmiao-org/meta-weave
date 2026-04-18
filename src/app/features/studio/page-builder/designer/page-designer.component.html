@@ -1,0 +1,120 @@
+<thy-card thyBordered="false" class="page-panel">
+  <div class="page-panel__header">
+    <div>
+      <p class="page-panel__eyebrow">{{ copy().pageNavDesigner }}</p>
+      <h2>{{ copy().generatedPageTitle }}</h2>
+      <div class="page-panel__meta">
+        <thy-tag thyColor="primary" thyTheme="weak-fill" thySize="sm">{{
+          workspace.schema().pageMeta.id
+        }}</thy-tag>
+        <thy-tag thyColor="success" thyTheme="weak-fill" thySize="sm">{{
+          workspace.previewRoutePath()
+        }}</thy-tag>
+      </div>
+    </div>
+    <div class="page-panel__actions">
+      <button thyButton="outline-primary" size="sm" (click)="workspace.generateQueryPage()">
+        {{ copy().generateQueryPage }}
+      </button>
+      <button thyButton="primary" size="sm" (click)="workspace.generateCrudPage()">
+        {{ copy().generateCrudPage }}
+      </button>
+      <button thyButton="outline-primary" size="sm" (click)="workspace.resetWorkspace()">
+        {{ copy().resetWorkspace }}
+      </button>
+    </div>
+  </div>
+
+  <div class="page-panel__stats">
+    <thy-statistic
+      thyShape="card"
+      thyColor="primary"
+      [thyValue]="workspace.schema().datasources.length"
+      [thyTitle]="copy().pageDatasources"
+    ></thy-statistic>
+    <thy-statistic
+      thyShape="card"
+      thyColor="info"
+      [thyValue]="workspace.schema().actions.length"
+      [thyTitle]="copy().pageActions"
+    ></thy-statistic>
+    <thy-statistic
+      thyShape="card"
+      thyColor="warning"
+      [thyValue]="workspace.nodeCount()"
+      [thyTitle]="copy().pageNodeCount"
+    ></thy-statistic>
+  </div>
+
+  <thy-card thyBordered="false" class="traceback-panel">
+    <div class="traceback-panel__header">
+      <div>
+        <p class="page-panel__eyebrow">{{ copy().dslVersioningTitle }}</p>
+        <h3>{{ copy().dslVersioningSubtitle }}</h3>
+      </div>
+      <label class="traceback-panel__toggle">
+        <input
+          type="checkbox"
+          [checked]="autoSnapshot()"
+          (change)="setAutoSnapshot($any($event.target).checked)"
+        />
+        <span>{{ copy().autoSnapshotToggle }}</span>
+      </label>
+    </div>
+    <div class="traceback-panel__actions">
+      <button thyButton="outline-primary" size="sm" (click)="saveSnapshot()">
+        {{ copy().createSnapshot }}
+      </button>
+      <button thyButton="outline-primary" size="sm" (click)="exportSnapshot()">
+        {{ copy().exportDsl }}
+      </button>
+      <label class="traceback-panel__import">
+        <input type="file" accept="application/json" (change)="onImportFile($event)" />
+        <span>{{ copy().importDsl }}</span>
+      </label>
+      <button thyButton="outline-default" size="sm" (click)="refreshSnapshots()">
+        {{ copy().refreshSnapshots }}
+      </button>
+    </div>
+    <div class="traceback-panel__list">
+      @if (snapshots().length === 0) {
+        <p class="traceback-panel__empty">{{ copy().snapshotEmpty }}</p>
+      } @else {
+        @for (item of snapshots(); track item.id) {
+          <div class="traceback-panel__item">
+            <div>
+              <strong>{{ item.label }}</strong>
+              <p>{{ item.timestamp }} · {{ item.checksum }}</p>
+            </div>
+            <div class="traceback-panel__item-actions">
+              <button thyButton="outline-primary" size="sm" (click)="restoreSnapshot(item.id)">
+                {{ copy().restoreSnapshot }}
+              </button>
+              <button thyButton="outline-default" size="sm" (click)="removeSnapshot(item.id)">
+                {{ copy().deleteSnapshot }}
+              </button>
+            </div>
+          </div>
+        }
+      }
+    </div>
+  </thy-card>
+
+  <section class="designer-runtime" aria-live="polite">
+    @if (designerStatus() === 'loading') {
+      <div class="designer-runtime__placeholder">
+        <p>{{ copy().pageNavDesigner }}</p>
+        <strong>Loading designer runtime...</strong>
+      </div>
+    }
+
+    @if (designerStatus() === 'error') {
+      <div class="designer-runtime__placeholder designer-runtime__placeholder--error">
+        <p>Designer runtime failed to load.</p>
+        <button thyButton="outline-primary" size="sm" (click)="reloadDesigner()">Retry</button>
+      </div>
+    }
+
+    <ng-container #designerHost></ng-container>
+  </section>
+</thy-card>
