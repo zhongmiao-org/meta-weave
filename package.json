@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve --port 4200",
     "build": "ng build",
+    "build:ci": "ng build --configuration development --source-map=false --progress=false",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --watch=false",
     "lint": "prettier --check .",
