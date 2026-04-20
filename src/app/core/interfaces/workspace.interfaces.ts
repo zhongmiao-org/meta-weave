@@ -45,6 +45,22 @@ export interface DslSnapshotRecord {
   payload: unknown;
 }
 
+export interface DesignerPreviewIntent {
+  pageId: string;
+  routePath: string;
+  schemaFingerprint: string;
+  requestedAt: string;
+  schema: NgxLowcodePageSchema;
+}
+
+export interface DesignerPublishDraft {
+  pageId: string;
+  schemaFingerprint: string;
+  status: 'drafted';
+  requestedAt: string;
+  schema: NgxLowcodePageSchema;
+}
+
 export interface QueryExecutionSnapshot {
   requestId: string;
   source: 'bff' | 'fallback';

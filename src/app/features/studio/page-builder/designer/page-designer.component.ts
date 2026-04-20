@@ -143,12 +143,12 @@ export class PageDesignerComponent implements AfterViewInit, OnDestroy {
       });
       this.designerRef = componentRef;
       componentRef.instance.schemaChange.subscribe((schema) => this.workspace.schema.set(schema));
-      componentRef.instance.save.subscribe(() => this.workspace.lastCommand.set('save emitted'));
-      componentRef.instance.previewRequest.subscribe(() =>
-        this.workspace.lastCommand.set('preview emitted'),
+      componentRef.instance.save.subscribe((schema) => void this.handleDesignerSave(schema));
+      componentRef.instance.previewRequest.subscribe((schema) =>
+        this.handleDesignerPreview(schema),
       );
-      componentRef.instance.publishRequest.subscribe(() =>
-        this.workspace.lastCommand.set('publish emitted'),
+      componentRef.instance.publishRequest.subscribe((schema) =>
+        this.handleDesignerPublish(schema),
       );
       this.designerReady.set(true);
       this.designerStatus.set('ready');
@@ -167,6 +167,29 @@ export class PageDesignerComponent implements AfterViewInit, OnDestroy {
       await this.workspace.saveSnapshotPoint('auto');
       await this.refreshSnapshots();
     }, 1500);
+  }
+
+  protected async handleDesignerSave(
+    schema: Parameters<DemoWorkspaceService['saveDesignerSnapshot']>[0],
+  ): Promise<void> {
+    try {
+      await this.workspace.saveDesignerSnapshot(schema);
+      await this.refreshSnapshots();
+    } catch (error) {
+      this.workspace.lastCommand.set((error as Error).message);
+    }
+  }
+
+  protected handleDesignerPreview(
+    schema: Parameters<DemoWorkspaceService['recordDesignerPreviewIntent']>[0],
+  ): void {
+    this.workspace.recordDesignerPreviewIntent(schema);
+  }
+
+  protected handleDesignerPublish(
+    schema: Parameters<DemoWorkspaceService['recordDesignerPublishDraft']>[0],
+  ): void {
+    this.workspace.recordDesignerPublishDraft(schema);
   }
 
   ngOnDestroy(): void {

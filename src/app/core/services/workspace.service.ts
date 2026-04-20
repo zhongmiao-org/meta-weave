@@ -23,6 +23,8 @@ import {
 } from '@zhongmiao/ngx-lowcode-meta-model';
 import { NgxLowcodeDesignerLocale } from '@zhongmiao/ngx-lowcode-i18n';
 import type {
+  DesignerPreviewIntent,
+  DesignerPublishDraft,
   DslSnapshotRecord,
   DslSnapshotV1,
   PermissionApiConfig,
@@ -45,6 +47,8 @@ export class DemoWorkspaceService {
   readonly selectedDatasourceId = signal('orders-resource');
   readonly schema = signal<NgxLowcodePageSchema>(createOrdersDemoSchema(this.tenantId()));
   readonly lastCommand = signal('workspace ready');
+  readonly designerPreviewIntent = signal<DesignerPreviewIntent | null>(null);
+  readonly designerPublishDraft = signal<DesignerPublishDraft | null>(null);
   readonly validationIssues = computed(() => validateMetaModelDraft(this.metaModel()));
   readonly metaSchemaDraft = computed(() =>
     JSON.stringify(toMetaSchemaDraft(this.metaModel()), null, 2),
@@ -519,6 +523,41 @@ export class DemoWorkspaceService {
     return record;
   }
 
+  async saveDesignerSnapshot(schema: NgxLowcodePageSchema): Promise<DslSnapshotRecord> {
+    this.schema.set(structuredClone(schema));
+    return await this.saveSnapshotPoint('designer-save');
+  }
+
+  recordDesignerPreviewIntent(schema: NgxLowcodePageSchema): DesignerPreviewIntent {
+    this.schema.set(structuredClone(schema));
+    const pageId = schema.pageMeta.id;
+    const intent: DesignerPreviewIntent = {
+      pageId,
+      routePath: `/preview/${pageId}`,
+      schemaFingerprint: computeSchemaFingerprint(schema),
+      requestedAt: new Date().toISOString(),
+      schema: structuredClone(schema),
+    };
+    this.designerPreviewIntent.set(intent);
+    this.lastCommand.set(`preview requested: ${pageId}`);
+    return intent;
+  }
+
+  recordDesignerPublishDraft(schema: NgxLowcodePageSchema): DesignerPublishDraft {
+    this.schema.set(structuredClone(schema));
+    const pageId = schema.pageMeta.id;
+    const draft: DesignerPublishDraft = {
+      pageId,
+      schemaFingerprint: computeSchemaFingerprint(schema),
+      status: 'drafted',
+      requestedAt: new Date().toISOString(),
+      schema: structuredClone(schema),
+    };
+    this.designerPublishDraft.set(draft);
+    this.lastCommand.set(`publish drafted: ${pageId}`);
+    return draft;
+  }
+
   async listSnapshotPoints(): Promise<DslSnapshotRecord[]> {
     return await this.snapshotStore.listSnapshots();
   }
@@ -788,7 +827,15 @@ function computeSnapshotChecksum(payload: {
   datasourceDrafts: NgxLowcodeDatasourceDraft[];
   schema: NgxLowcodePageSchema;
 }): string {
-  const text = stableStringify(payload);
+  return computeStableChecksum(payload);
+}
+
+function computeSchemaFingerprint(schema: NgxLowcodePageSchema): string {
+  return computeStableChecksum(schema);
+}
+
+function computeStableChecksum(input: unknown): string {
+  const text = stableStringify(input);
   let hash = 0x811c9dc5;
   for (let index = 0; index < text.length; index += 1) {
     hash ^= text.charCodeAt(index);
