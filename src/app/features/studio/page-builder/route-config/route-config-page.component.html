@@ -19,6 +19,29 @@
       </div>
     </div>
 
+    <div class="route-config__publish" data-testid="publish-draft">
+      @if (workspace.designerPublishDraft(); as draft) {
+        <div>
+          <strong>{{ draft.pageId }}</strong>
+          <span>publish page</span>
+        </div>
+        <div>
+          <strong>{{ draft.status }}</strong>
+          <span>publish status</span>
+        </div>
+        <div>
+          <strong>{{ draft.schemaFingerprint }}</strong>
+          <span>schema fingerprint</span>
+        </div>
+        <div>
+          <strong>{{ draft.requestedAt }}</strong>
+          <span>requested at</span>
+        </div>
+      } @else {
+        <p>No designer publish draft yet.</p>
+      }
+    </div>
+
     <pre class="route-config__code">{{ workspace.previewRouteConfig() }}</pre>
   </thy-card>
 </div>

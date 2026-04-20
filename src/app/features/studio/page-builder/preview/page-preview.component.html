@@ -30,6 +30,29 @@
       </div>
     </div>
 
+    <div class="preview-grid__intent" data-testid="preview-intent">
+      @if (workspace.designerPreviewIntent(); as intent) {
+        <div>
+          <strong>{{ intent.pageId }}</strong>
+          <span>preview page</span>
+        </div>
+        <div>
+          <strong>{{ intent.routePath }}</strong>
+          <span>preview route</span>
+        </div>
+        <div>
+          <strong>{{ intent.schemaFingerprint }}</strong>
+          <span>schema fingerprint</span>
+        </div>
+        <div>
+          <strong>{{ intent.requestedAt }}</strong>
+          <span>requested at</span>
+        </div>
+      } @else {
+        <p>No designer preview request yet.</p>
+      }
+    </div>
+
     <ngx-lowcode-renderer [schema]="workspace.schema()"></ngx-lowcode-renderer>
   </thy-card>
 </div>

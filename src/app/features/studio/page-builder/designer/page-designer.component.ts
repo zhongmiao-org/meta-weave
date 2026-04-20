@@ -12,6 +12,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import type { NgxLowcodeDesignerComponent } from '@zhongmiao/ngx-lowcode-designer';
 import { getDemoProjectI18n } from '@zhongmiao/ngx-lowcode-i18n';
 import { ThyButtonModule } from 'ngx-tethys/button';
@@ -31,6 +32,7 @@ import { DemoWorkspaceService } from '../../../../core/services/workspace.servic
 export class PageDesignerComponent implements AfterViewInit, OnDestroy {
   protected readonly workspace = inject(DemoWorkspaceService);
   private readonly environmentInjector = inject(EnvironmentInjector);
+  private readonly router = inject(Router);
   protected readonly copy = computed(() => getDemoProjectI18n(this.workspace.locale()));
   protected readonly snapshots = signal<DslSnapshotRecord[]>([]);
   protected readonly autoSnapshot = signal(true);
@@ -184,6 +186,7 @@ export class PageDesignerComponent implements AfterViewInit, OnDestroy {
     schema: Parameters<DemoWorkspaceService['recordDesignerPreviewIntent']>[0],
   ): void {
     this.workspace.recordDesignerPreviewIntent(schema);
+    void this.router.navigateByUrl('/studio/page/preview');
   }
 
   protected handleDesignerPublish(

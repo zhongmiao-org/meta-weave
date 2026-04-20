@@ -1,5 +1,6 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { vi } from 'vitest';
 import type { NgxLowcodePageSchema } from '@zhongmiao/ngx-lowcode-core-types';
 import { createOrdersDemoSchema } from '../../../../core/models/project-schema';
@@ -20,15 +21,22 @@ describe('PageDesignerComponent designer command bridge', () => {
       recordDesignerPreviewIntent: vi.fn(),
       recordDesignerPublishDraft: vi.fn(),
     };
+    const router = {
+      navigateByUrl: vi.fn().mockResolvedValue(true),
+    };
 
     TestBed.configureTestingModule({
-      providers: [{ provide: DemoWorkspaceService, useValue: workspace }],
+      providers: [
+        { provide: DemoWorkspaceService, useValue: workspace },
+        { provide: Router, useValue: router },
+      ],
     });
 
     const component = TestBed.runInInjectionContext(() => new PageDesignerComponent());
     return {
       component,
       workspace,
+      router,
       schema: createOrdersDemoSchema('tenant-b'),
     };
   }
@@ -52,8 +60,8 @@ describe('PageDesignerComponent designer command bridge', () => {
     component.ngOnDestroy();
   });
 
-  it('forwards designer preview events into workspace preview intent state', () => {
-    const { component, workspace, schema } = createComponentWithWorkspace();
+  it('forwards designer preview events into workspace preview intent state and navigates to preview', () => {
+    const { component, workspace, router, schema } = createComponentWithWorkspace();
 
     (
       component as unknown as {
@@ -63,6 +71,8 @@ describe('PageDesignerComponent designer command bridge', () => {
 
     expect(workspace.recordDesignerPreviewIntent).toHaveBeenCalledTimes(1);
     expect(workspace.recordDesignerPreviewIntent).toHaveBeenCalledWith(schema);
+    expect(router.navigateByUrl).toHaveBeenCalledOnce();
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/studio/page/preview');
     component.ngOnDestroy();
   });
 
