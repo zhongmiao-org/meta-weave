@@ -17,6 +17,7 @@ import {
 const DEMO_SELECTED_ORDER_STATE_KEY = 'selectedOrderId';
 const DEMO_ORG_ID_STATE_KEYS = ['orgId', 'form_org_id', 'org_id', 'selectedOrgId'] as const;
 const DEMO_ORDERS_QUERY_FIELDS = ['id', 'owner', 'channel', 'priority', 'status'] as const;
+const DEMO_RUNTIME_WS_DATASOURCE_ID = 'runtime-page-updates';
 
 export function createDemoMetaModelPreset(): NgxLowcodeMetaModelDraft {
   return createCommerceModelPreset();
@@ -61,6 +62,18 @@ export function createDemoGeneratedSchema(
   });
   const orchestrated = applyDemoOrchestrationConventions(hydrated, draft, tenantId);
 
+  const datasources = orchestrated.datasources.map((datasource: NgxLowcodeDatasourceDefinition) =>
+    datasource.id === `${draft.tableId}-query-datasource`
+      ? {
+          ...datasource,
+          mockData: [
+            ...createTenantSeedRows(draft.tableId, 'tenant-a'),
+            ...createTenantSeedRows(draft.tableId, 'tenant-b'),
+          ],
+        }
+      : datasource,
+  );
+
   return {
     ...orchestrated,
     pageMeta: {
@@ -74,17 +87,33 @@ export function createDemoGeneratedSchema(
       ...orchestrated.state,
       tableData: createTenantSeedRows(draft.tableId, tenantId),
     },
-    datasources: orchestrated.datasources.map((datasource: NgxLowcodeDatasourceDefinition) =>
-      datasource.id === `${draft.tableId}-query-datasource`
-        ? {
-            ...datasource,
-            mockData: [
-              ...createTenantSeedRows(draft.tableId, 'tenant-a'),
-              ...createTenantSeedRows(draft.tableId, 'tenant-b'),
-            ],
-          }
-        : datasource,
-    ),
+    datasources: [
+      ...datasources,
+      createDemoRuntimeWebSocketDatasource(tenantId, orchestrated.pageMeta.id),
+    ],
+  };
+}
+
+export function createDemoRuntimePageTopic(
+  tenantId: string,
+  pageId: string,
+  pageInstanceId = `${pageId}-preview`,
+): string {
+  return `tenant.${tenantId}.page.${pageId}.instance.${pageInstanceId}`;
+}
+
+function createDemoRuntimeWebSocketDatasource(
+  tenantId: string,
+  pageId: string,
+): NgxLowcodeDatasourceDefinition {
+  return {
+    id: DEMO_RUNTIME_WS_DATASOURCE_ID,
+    type: 'runtime-websocket',
+    command: {
+      transport: 'websocket',
+      name: 'subscribeRuntimePageUpdates',
+      target: createDemoRuntimePageTopic(tenantId, pageId),
+    },
   };
 }
 
