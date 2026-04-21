@@ -4,7 +4,10 @@
   "scripts": {
     "ng": "ng",
     "postinstall": "node ./scripts/patch-ngx-lowcode-designer.mjs",
+    "link:ngx-lowcode": "node ./scripts/link-ngx-lowcode.mjs",
+    "link:ngx-lowcode:no-build": "node ./scripts/link-ngx-lowcode.mjs --no-build",
     "start": "ng serve --host 0.0.0.0 --port 4200",
+    "start:linked": "ng cache clean && ng serve --host 0.0.0.0 --port 4200 --poll=1000",
     "build": "ng build",
     "build:ci": "ng build --configuration development --source-map=false --progress=false",
     "lint": "prettier --check .",

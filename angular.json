@@ -26,6 +26,7 @@
             "browser": "src/main.ts",
             "polyfills": [],
             "tsConfig": "tsconfig.app.json",
+            "preserveSymlinks": true,
             "inlineStyleLanguage": "scss",
             "assets": [
               {
@@ -67,6 +68,24 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "prebundle": {
+              "exclude": [
+                "@zhongmiao/ngx-lowcode",
+                "@zhongmiao/ngx-lowcode-core",
+                "@zhongmiao/ngx-lowcode-core-types",
+                "@zhongmiao/ngx-lowcode-core-utils",
+                "@zhongmiao/ngx-lowcode-datasource",
+                "@zhongmiao/ngx-lowcode-designer",
+                "@zhongmiao/ngx-lowcode-i18n",
+                "@zhongmiao/ngx-lowcode-materials",
+                "@zhongmiao/ngx-lowcode-meta-model",
+                "@zhongmiao/ngx-lowcode-puzzle-adapter",
+                "@zhongmiao/ngx-lowcode-renderer",
+                "@zhongmiao/ngx-lowcode-testing"
+              ]
+            }
+          },
           "configurations": {
             "production": {
               "buildTarget": "meta-weave:build:production"
