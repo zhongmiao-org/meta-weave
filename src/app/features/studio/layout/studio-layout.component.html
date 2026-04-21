@@ -2,7 +2,7 @@
   <thy-header thyDivided="true" class="workspace-layout__header">
     <ng-template #headerTitle>
       <a class="workspace-layout__home-link" routerLink="/">
-        <thy-icon thyIconName="house-square" thyIconType="fill"></thy-icon>
+        <thy-icon thyIconName="house-square-fill"></thy-icon>
       </a>
       <thy-icon class="workspace-layout__title-separator" thyIconName="angle-right"></thy-icon>
       <button
@@ -75,7 +75,7 @@
           href="javascript:"
           thyAction
           class="text-warning"
-          thyIcon="building"
+          thyIcon="building-square-fill"
           [thyActionActive]="workspace.projectId() === 'commerce-core'"
           (click)="workspace.switchProject('commerce-core')"
         ></a>
@@ -83,12 +83,12 @@
           *thySpaceItem
           href="javascript:"
           thyAction
-          thyIcon="blocks"
+          thyIcon="app-project-fill"
           [thyActionActive]="workspace.projectId() === 'crm-ops'"
           (click)="workspace.switchProject('crm-ops')"
         ></a>
         <a *thySpaceItem href="javascript:" thyAction thyIcon="contacts"></a>
-        <a *thySpaceItem href="javascript:" thyAction thyIcon="deployment-unit"></a>
+        <a *thySpaceItem href="javascript:" thyAction thyIcon="deploy"></a>
       </thy-space>
       <thy-divider
         class="workspace-layout__title-divider"
@@ -152,7 +152,7 @@
             </a>
             <a
               thyMenuItem
-              thyIcon="blocks"
+              thyIcon="data-sheet-fill"
               routerLink="/studio/datasource"
               routerLinkActive="workspace-layout__menu-item--active"
             >
@@ -192,10 +192,10 @@
               </thy-menu-group>
             } @else if (activeSection() === 'permission') {
               <thy-menu-group [thyTitle]="copy().workspaceNavPermission" [thyCollapsible]="true">
-                <a thyMenuItem thyIcon="setting" href="javascript:">
+                <a thyMenuItem thyIcon="settings" href="javascript:">
                   <span thyMenuItemName>{{ copy().apiDesignerTitle }}</span>
                 </a>
-                <a thyMenuItem thyIcon="shield" href="javascript:">
+                <a thyMenuItem thyIcon="shield-square-fill" href="javascript:">
                   <span thyMenuItemName>{{ copy().permissionSectionTitle }}</span>
                 </a>
               </thy-menu-group>
@@ -204,7 +204,7 @@
                 @for (draft of workspace.datasourceDrafts(); track draft.id) {
                   <a
                     thyMenuItem
-                    thyIcon="database"
+                    thyIcon="data-sheet-fill"
                     href="javascript:"
                     [class.workspace-layout__menu-item--active]="
                       workspace.selectedDatasourceId() === draft.id
@@ -215,7 +215,7 @@
                     <thy-menu-item-action>
                       <a
                         thyAction
-                        thyIcon="link"
+                        thyIcon="link-insert"
                         (click)="$event.stopPropagation(); workspace.bindResultTable()"
                       ></a>
                     </thy-menu-item-action>
